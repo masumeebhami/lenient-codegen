@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "lenient",
+    "lenient_derive",
+    "lenient_test"
+]

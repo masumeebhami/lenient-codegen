@@ -2,7 +2,13 @@
 name = "lenient"
 version = "0.1.0"
 edition = "2021"
-
+authors = ["Masoumeh Ebhami <masumeebhami@gmail.com>"]
+description = "Serde-compatible wrapper for fault-tolerant (lenient) deserialization"
+license = "MIT"
+repository = "https://github.com/masumeebhami/lenient-codegen"
+readme = "../README.md"
+keywords = ["serde", "deserialization", "lenient", "error-handling"]
+categories = ["parsing", "serialization", "config"]
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 tracing = "0.1"

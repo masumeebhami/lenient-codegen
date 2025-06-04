@@ -118,4 +118,4 @@ fn test_lenient_invalid() {
 
 ## 🔖 License
 
-MIT or Apache 2.0 — your choice.
+MIT

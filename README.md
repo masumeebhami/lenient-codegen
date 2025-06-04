@@ -52,21 +52,33 @@ use lenient::LenientDeserialize;
 use serde::Deserialize;
 
 #[derive(Debug, Default)]
-struct Size(pub usize);
-impl<'de> Deserialize<'de> for Size {
+struct Age(pub u32);
+impl<'de> Deserialize<'de> for Age {
     fn deserialize<D>(de: D) -> Result<Self, D::Error>
     where D: serde::Deserializer<'de> {
-        let val = usize::deserialize(de)?;
-        Ok(Size(val))
+        let val = u32::deserialize(de)?;
+        Ok(Age(val))
+    }
+}
+
+#[derive(Debug, Default)]
+struct Score(pub u8);
+impl<'de> Deserialize<'de> for Score {
+    fn deserialize<D>(de: D) -> Result<Self, D::Error>
+    where D: serde::Deserializer<'de> {
+        let val = u8::deserialize(de)?;
+        Ok(Score(val))
     }
 }
 
 #[derive(Debug, Default, LenientDeserialize)]
-struct Offset {
+struct UserProfile {
     #[lenient]
-    from: Size,
+    age: Age,
     #[optional]
-    size: Size,
+    score: Score,
+    #[lenient]
+    nickname: String,
 }
 ```
 
@@ -77,14 +89,14 @@ struct Offset {
 ```rust
 use serde_json::json;
 
-let input = json!({ "from": "oops", "size": 10 });
-let offset: Offset = serde_json::from_value(input).unwrap();
+let input = json!({ "age": "oops", "score": 90, "nickname": "Nina" });
+let profile: UserProfile = serde_json::from_value(input).unwrap();
 
-// Access using Deref
-let from_val = offset.from.0;
-let size_val = offset.size.0;
+let age = profile.age.0;
+let score = profile.score.0;
+let nickname = &profile.nickname;
 
-println!("From: {from_val}, Size: {size_val}");
+println!("User: {nickname}, Age: {age}, Score: {score}");
 ```
 
 ---
@@ -102,15 +114,11 @@ cargo test -p lenient
 ```rust
 #[test]
 fn test_lenient_invalid() {
-    let json = r#"{ "value": "invalid" }"#;
+    let json = r#"{ "age": "invalid", "score": 55, "nickname": "test" }"#;
 
-    #[derive(Debug, Default, PartialEq, Deserialize)]
-    struct MyType {
-        value: usize,
-    }
-
-    let result: lenient::Lenient<MyType> = serde_json::from_str(json).unwrap();
-    assert_eq!(result.value, 0); // defaulted
+    let result: UserProfile = serde_json::from_str(json).unwrap();
+    assert_eq!(result.age.0, 0); // fallback to default
+    assert_eq!(result.nickname, "test");
 }
 ```
 

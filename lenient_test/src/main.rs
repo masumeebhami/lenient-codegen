@@ -7,37 +7,37 @@ use serde_json::json;
 use lenient::{Lenient, Optional};
 
 #[derive(Debug, Default)]
-struct From(pub usize);
-impl<'de> Deserialize<'de> for From {
+struct Age(pub u32);
+impl<'de> Deserialize<'de> for Age {
     fn deserialize<D>(de: D) -> Result<Self, D::Error>
     where
         D: serde::Deserializer<'de>,
     {
-        let val = usize::deserialize(de)?;
-        Ok(From(val))
+        let val = u32::deserialize(de)?;
+        Ok(Age(val))
     }
 }
 
 #[derive(Debug, Default)]
-struct Size(pub usize);
-impl<'de> Deserialize<'de> for Size {
+struct Score(pub u8);
+impl<'de> Deserialize<'de> for Score {
     fn deserialize<D>(de: D) -> Result<Self, D::Error>
     where
         D: serde::Deserializer<'de>,
     {
-        let val = usize::deserialize(de)?;
-        Ok(Size(val))
+        let val = u8::deserialize(de)?;
+        Ok(Score(val))
     }
 }
 
 #[derive(Debug, Default, LenientDeserialize)]
-struct Offset {
+struct UserProfile {
     #[lenient]
-    from: From,
+    age: Age,
     #[optional]
-    size: Size,
+    score: Score,
     #[lenient]
-    label: String,
+    nickname: String,
 }
 
 fn main() {
@@ -45,34 +45,31 @@ fn main() {
         ("Empty input", json!({})),
         (
             "Valid input",
-            json!({ "from": 5, "size": 10, "label": "ok" }),
+            json!({ "age": 30, "score": 88, "nickname": "Alice" }),
         ),
-        ("Invalid 'from'", json!({ "from": "invalid", "size": 10 })),
         (
-            "Invalid 'size'",
-            json!({ "from": 3, "size": "oops", "label": "label" }),
+            "Invalid age",
+            json!({ "age": "old", "score": 88, "nickname": "Bob" }),
+        ),
+        (
+            "Invalid score",
+            json!({ "age": 22, "score": "excellent", "nickname": "Charlie" }),
         ),
         (
             "Invalid all",
-            json!({ "from": "?", "size": [], "label": 55 }),
+            json!({ "age": [], "score": {}, "nickname": 404 }),
         ),
-        ("Missing all", json!({})),
     ];
 
     for (desc, input) in test_cases {
-        println!(
-            "
-== {desc} ==
-Input: {input}"
-        );
-        match serde_json::from_value::<Offset>(input) {
-            Ok(offset) => {
-                // Test Deref access (From is Deref'd via Lenient)
-                let from_val: usize = offset.from.0;
-                let size_val: usize = offset.size.0;
+        println!("\n== {desc} ==\nInput: {input}");
+        match serde_json::from_value::<UserProfile>(input) {
+            Ok(profile) => {
+                let age_val = profile.age.0;
+                let score_val = profile.score.0;
                 println!(
-                    "Deserialized: Offset {{ from: {from_val}, size: {size_val}, label: {:?} }}",
-                    &offset.label
+                    "Deserialized: UserProfile {{ age: {age_val}, score: {score_val}, nickname: {:?} }}",
+                    &profile.nickname
                 );
             }
             Err(e) => println!("❌ Error: {e}"),

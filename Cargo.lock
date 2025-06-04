@@ -14,6 +14,7 @@ version = "0.1.0"
 dependencies = [
  "lenient_derive",
  "serde",
+ "serde_json",
  "tracing",
 ]
 
@@ -31,6 +32,7 @@ name = "lenient_test"
 version = "0.1.0"
 dependencies = [
  "lenient",
+ "lenient_derive",
  "serde",
  "serde_json",
  "tracing",

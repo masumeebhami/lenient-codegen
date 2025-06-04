@@ -10,8 +10,10 @@ This is useful when handling user inputs, external APIs, or anything where input
 
 - `Lenient<T>`: wraps any type to gracefully fallback to `T::default()` on deserialization failure.
 - `Optional<T>`: alias for `Lenient<Option<T>>`.
-- `#[derive(LenientDeserialize)]`: a procedural macro to generate fault-tolerant wrappers for entire structs automatically.
+- `#[derive(LenientDeserialize)]`: a procedural macro to generate fault-tolerant wrappers for entire structs.
+- Support for field-level `#[lenient]` and `#[optional]` attributes.
 - Optional error logging via [`tracing`](https://docs.rs/tracing).
+- Ergonomic access with `Deref` and `DerefMut` on `Lenient<T>`.
 
 ---
 
@@ -21,7 +23,7 @@ This workspace contains two crates:
 
 ```
 lenient/
-├── lenient/            # The main library (Lenient wrapper, re-exports macro)
+├── lenient/            # Main library (Lenient wrapper, re-exports macro)
 ├── lenient_derive/     # Procedural macro crate (LenientDeserialize)
 ```
 
@@ -61,14 +63,16 @@ impl<'de> Deserialize<'de> for Size {
 
 #[derive(Debug, Default, LenientDeserialize)]
 struct Offset {
+    #[lenient]
     from: Size,
+    #[optional]
     size: Size,
 }
 ```
 
 ---
 
-### 3. Example Input Handling
+### 3. Example Input Handling with `Deref`
 
 ```rust
 use serde_json::json;
@@ -76,35 +80,39 @@ use serde_json::json;
 let input = json!({ "from": "oops", "size": 10 });
 let offset: Offset = serde_json::from_value(input).unwrap();
 
-// Prints: from: defaulted due to invalid input, size: 10
-dbg!(offset);
+// Access using Deref
+let from_val = offset.from.0;
+let size_val = offset.size.0;
+
+println!("From: {from_val}, Size: {size_val}");
 ```
 
 ---
 
-## 🧪 Running Tests
+## 🧪 Tests
 
-If you're using `main.rs` as an integration test:
+### Run Unit Tests for `lenient`
 
 ```sh
-cargo run --bin test_lenient
+cargo test -p lenient
 ```
 
-Or write unit tests in `lib.rs` using `#[cfg(test)]`.
+### Sample Test
 
----
+```rust
+#[test]
+fn test_lenient_invalid() {
+    let json = r#"{ "value": "invalid" }"#;
 
-## 🛠️ Building the Procedural Macro
+    #[derive(Debug, Default, PartialEq, Deserialize)]
+    struct MyType {
+        value: usize,
+    }
 
-The `lenient_derive` crate provides `#[derive(LenientDeserialize)]`. You typically **don’t use this directly** — it's re-exported from the `lenient` crate.
-
----
-
-## 📚 TODOs
-
-- [ ] Add support for field-level `#[lenient]`, `#[optional]` attributes.
-- [ ] Implement `Deref` for ergonomic access to wrapped values.
-- [ ] Publish to crates.io.
+    let result: lenient::Lenient<MyType> = serde_json::from_str(json).unwrap();
+    assert_eq!(result.value, 0); // defaulted
+}
+```
 
 ---
 

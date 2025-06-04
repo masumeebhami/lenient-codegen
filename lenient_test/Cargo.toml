@@ -2,9 +2,14 @@
 name = "lenient_test"
 version = "0.1.0"
 edition = "2021"
+description = "Binary test crate for validating the lenient deserialization system."
+license = "MIT OR Apache-2.0"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 tracing = "0.1"
-serde_json = "1.0.140"
+
+# Local path dependency to your main lenient crate
 lenient = { path = "../lenient" }
+lenient_derive = { path = "../lenient_derive" }

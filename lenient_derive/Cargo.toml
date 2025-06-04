@@ -6,7 +6,7 @@ authors = ["Masoumeh Ebhami <masumeebhami@gmail.com>"]
 description = "A procedural macro to derive fault-tolerant Serde deserialization using #[lenient] and #[optional] annotations."
 license = "MIT"
 repository = "https://github.com/masumeebhami/lenient"
-categories = ["parsing", "serialization", "development-tools::procedural-macro"]
+categories = ["parsing"]
 keywords = ["serde", "derive", "lenient", "macro", "deserialization"]
 
 [lib]

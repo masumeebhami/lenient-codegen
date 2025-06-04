@@ -8,12 +8,11 @@ license = "MIT"
 repository = "https://github.com/masumeebhami/lenient-codegen"
 readme = "../README.md"
 keywords = ["serde", "deserialization", "lenient", "error-handling"]
-categories = ["parsing", "serialization", "config"]
+categories = ["parsing","config"]
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-tracing = "0.1"
 
 # Local path dependency to your main lenient crate
 lenient = { path = "../lenient" }

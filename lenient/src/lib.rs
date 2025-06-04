@@ -69,7 +69,6 @@ mod tests {
     }
 
     #[test]
-    #[test]
     fn test_deref() {
         let wrapper: Lenient<MyType, true> = Lenient(MyType { value: 100 });
         assert_eq!(wrapper.value, 100);

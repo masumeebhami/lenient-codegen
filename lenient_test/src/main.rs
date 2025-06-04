@@ -43,23 +43,37 @@ struct Offset {
 fn main() {
     let test_cases = vec![
         ("Empty input", json!({})),
-        ("Valid input", json!({ "from": 5, "size": 10, "label": "ok" })),
+        (
+            "Valid input",
+            json!({ "from": 5, "size": 10, "label": "ok" }),
+        ),
         ("Invalid 'from'", json!({ "from": "invalid", "size": 10 })),
-        ("Invalid 'size'", json!({ "from": 3, "size": "oops", "label": "label" })),
-        ("Invalid all", json!({ "from": "?", "size": [], "label": 55 })),
+        (
+            "Invalid 'size'",
+            json!({ "from": 3, "size": "oops", "label": "label" }),
+        ),
+        (
+            "Invalid all",
+            json!({ "from": "?", "size": [], "label": 55 }),
+        ),
         ("Missing all", json!({})),
     ];
 
     for (desc, input) in test_cases {
-        println!("
+        println!(
+            "
 == {desc} ==
-Input: {input}");
+Input: {input}"
+        );
         match serde_json::from_value::<Offset>(input) {
             Ok(offset) => {
                 // Test Deref access (From is Deref'd via Lenient)
                 let from_val: usize = offset.from.0;
                 let size_val: usize = offset.size.0;
-                println!("Deserialized: Offset {{ from: {from_val}, size: {size_val}, label: {:?} }}", &offset.label);
+                println!(
+                    "Deserialized: Offset {{ from: {from_val}, size: {size_val}, label: {:?} }}",
+                    &offset.label
+                );
             }
             Err(e) => println!("❌ Error: {e}"),
         }

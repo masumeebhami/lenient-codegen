@@ -2,6 +2,12 @@
 name = "lenient_derive"
 version = "0.1.0"
 edition = "2021"
+authors = ["Masoumeh Ebhami <masumeebhami@gmail.com>"]
+description = "A procedural macro to derive fault-tolerant Serde deserialization using #[lenient] and #[optional] annotations."
+license = "MIT"
+repository = "https://github.com/masumeebhami/lenient"
+categories = ["parsing", "serialization", "development-tools::procedural-macro"]
+keywords = ["serde", "derive", "lenient", "macro", "deserialization"]
 
 [lib]
 proc-macro = true

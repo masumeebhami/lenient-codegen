@@ -3,7 +3,12 @@ name = "lenient_test"
 version = "0.1.0"
 edition = "2021"
 description = "Binary test crate for validating the lenient deserialization system."
-license = "MIT OR Apache-2.0"
+authors = ["Masoumeh Ebhami <masumeebhami@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/masumeebhami/lenient-codegen"
+readme = "../README.md"
+keywords = ["serde", "deserialization", "lenient", "error-handling"]
+categories = ["parsing", "serialization", "config"]
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }

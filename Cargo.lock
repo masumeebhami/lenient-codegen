@@ -11,7 +11,10 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 [[package]]
 name = "lenient"
 version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9794e2ac3252284038a1f823d4cbc5e74380383ccedf0490c5fc107f5b99e489"
 dependencies = [
+ "lenient_derive 0.1.1",
  "serde",
  "serde_json",
  "tracing",
@@ -19,22 +22,11 @@ dependencies = [
 
 [[package]]
 name = "lenient"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9794e2ac3252284038a1f823d4cbc5e74380383ccedf0490c5fc107f5b99e489"
+version = "0.1.2"
 dependencies = [
- "lenient_derive 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
  "serde_json",
  "tracing",
-]
-
-[[package]]
-name = "lenient_derive"
-version = "0.1.1"
-dependencies = [
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -48,11 +40,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "lenient_derive"
+version = "0.1.2"
+dependencies = [
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "lenient_test"
 version = "0.1.0"
 dependencies = [
- "lenient 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "lenient_derive 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "lenient 0.1.1",
+ "lenient_derive 0.1.1",
  "serde",
  "serde_json",
 ]

@@ -1,6 +1,6 @@
 [package]
 name = "lenient_derive"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Masoumeh Ebhami <masumeebhami@gmail.com>"]
 description = "A procedural macro to derive fault-tolerant Serde deserialization using #[lenient] and #[optional] annotations."

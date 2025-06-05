@@ -40,7 +40,7 @@ In your `Cargo.toml`:
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 tracing = "0.1"
-lenient = { path = "./lenient" }
+lenient_derive = "0.1"
 ```
 
 ---
@@ -48,7 +48,7 @@ lenient = { path = "./lenient" }
 ### 2. Example: Lenient Field Wrapping
 
 ```rust
-use lenient::LenientDeserialize;
+use lenient_derive::LenientDeserialize;
 use serde::Deserialize;
 
 #[derive(Debug, Default)]

@@ -28,7 +28,7 @@ lenient = "0.1"
 In your Rust code:
 
 ```rust
-use lenient::LenientDeserialize;
+use lenient_derive::LenientDeserialize;
 use serde::Deserialize;
 
 #[derive(Debug, Default)]
